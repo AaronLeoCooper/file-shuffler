@@ -1,0 +1,7 @@
+.idea
+*.log
+coverage
+node_modules
+
+# project managed with npm not yarn
+yarn.lock

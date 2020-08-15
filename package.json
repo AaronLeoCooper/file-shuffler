@@ -1,0 +1,19 @@
+{
+  "name": "file-shuffler",
+  "version": "1.0.0",
+  "main": "index.js",
+  "bin": {
+    "shuffle": "index.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "yargs": "^15.4.1"
+  },
+  "devDependencies": {
+    "jest": "^26.4.0"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest --coverage"
+  }
+}
