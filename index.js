@@ -4,13 +4,14 @@ const fs = require('fs');
 const path = require('path');
 const yargs = require('yargs');
 
-const { getPrefixNum, isPrefixed, renameFile } = require('./src/utils');
+const { getFiles, renameFile } = require('./src/utils');
 
 const targetDir = yargs.argv._[0] || '.';
 const dir = path.resolve(process.cwd(), targetDir);
 
 const defaultSeparator = '__';
 const separator = yargs.argv.s || yargs.argv.separator || defaultSeparator;
+const extension = yargs.argv.e || yargs.argv.extension || '';
 
 const getBooleanFlag = (flag) => [true, 'true', 'yes'].includes(flag);
 
@@ -34,7 +35,9 @@ if (!fs.existsSync(dir)) {
   return;
 }
 
-const files = fs.readdirSync(dir);
+const dirEntries = fs.readdirSync(dir, { withFileTypes: true });
+const files = getFiles(dirEntries, extension);
+
 const indexes = [...files.keys()];
 
 for (let a = indexes.slice(), i = a.length; i--; ) {
@@ -55,4 +58,8 @@ for (let a = indexes.slice(), i = a.length; i--; ) {
   });
 }
 
-console.log('Shuffling complete!');
+if (files.length === 0) {
+  console.log('No matching files found to shuffle');
+} else {
+  console.log(`${files.length} files shuffled!`);
+}

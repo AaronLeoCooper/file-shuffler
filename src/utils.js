@@ -22,7 +22,19 @@ const isPrefixed = (file = '', separator = '') => {
   return unprefixedFile.startsWith(separator);
 };
 
-function renameFile(dir, file, separator, number, options = {}) {
+const getFiles = (files = [], extension = '') => {
+  return files
+    .filter((entry) => {
+      if (!entry || !entry.isFile()) {
+        return false;
+      }
+
+      return !extension || entry.name.endsWith(extension);
+    })
+    .map((entry) => entry.name);
+};
+
+const renameFile = (dir, file, separator, number, options = {}) => {
   const { forceShuffle, dryRun, debug } = options;
 
   const existingPrefix = isPrefixed(file, separator)
@@ -49,6 +61,6 @@ function renameFile(dir, file, separator, number, options = {}) {
   }
 
   return fs.renameSync(origPath, newPath);
-}
+};
 
-module.exports = { getPrefixNum, isPrefixed, renameFile };
+module.exports = { getPrefixNum, isPrefixed, getFiles, renameFile };

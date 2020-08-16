@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const { getPrefixNum, isPrefixed, renameFile } = require('./utils');
+const { getPrefixNum, isPrefixed, getFiles, renameFile } = require('./utils');
 
 jest.mock('fs', () => ({
   renameSync: jest.fn((origPath, newPath) => ({ origPath, newPath }))
@@ -47,6 +47,36 @@ describe('isPrefixed', () => {
 
   it('should return true when file has matching separator', () => {
     expect(isPrefixed('123--abc', '-')).toBe(true);
+  });
+});
+
+describe('getFiles', () => {
+  it('should return an empty array when nothing is passed', () => {
+    expect(getFiles()).toEqual([]);
+  });
+
+  it('should return an array with invalid values removed', () => {
+    expect(getFiles([
+      null,
+      { isFile: () => false },
+      undefined
+    ])).toEqual([]);
+  });
+
+  it('should return an array of file names', () => {
+    expect(getFiles([
+      { isFile: () => true, name: '1.txt' },
+      { isFile: () => false, name: '2.txt' },
+      { isFile: () => true, name: '3.txt' }
+    ])).toEqual(['1.txt', '3.txt']);
+  });
+
+  it('should return an array of file names with a matching extension when passed', () => {
+    expect(getFiles([
+      { isFile: () => true, name: '1.txt' },
+      { isFile: () => true, name: '2.png' },
+      { isFile: () => true, name: '3.txt' }
+    ], '.png')).toEqual(['2.png']);
   });
 });
 

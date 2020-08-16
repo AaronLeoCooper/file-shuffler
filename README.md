@@ -41,6 +41,11 @@ the number prefixes will be zero-padded (e.g., `05`, `0017`, etc).
 Calling `shuffle` followed by the name of a directory will target that
 folder to search for files inside. This can be absolute or relative.
 
+### `shuffle -e "txt"` or `shuffle --extension "txt"`
+
+Shuffles only files with a particular extension, ignoring all other
+files in the directory.
+
 ### `shuffle -s "--"` or `shuffle --separator "--"`
 
 Specify a character (or characters) to use as a separator between the
